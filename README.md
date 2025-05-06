@@ -1,4 +1,4 @@
-# Language Context App:speak_no_evil:
+# Language Context App
 
 A small React application to demonstrate how to use the `useContext` hook for managing global state — in this case, switching between multiple languages.
 
@@ -19,6 +19,9 @@ src/
 ├── components/
 │   ├── Header.jsx
 │   └── Content.jsx
+│   ├── LanguageSelector.jsx
+│   └── Translator.jsx
+│   ├── WelcomeMessage.jsx
 ├── contexts/
 │   ├── LanguageContext.js
 │   └── LanguageProvider.jsx
