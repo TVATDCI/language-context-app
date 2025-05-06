@@ -1,13 +1,11 @@
 import React from "react";
+import WelcomeMessage from "./WelcomeMessage";
 
 const Content = () => {
   return (
     <main>
-      <h2>Language Context App</h2>
-      <p>
-        This is a simple app to demonstrate the use of context API in React.
-      </p>
-      <p>Change the language using the buttons in the header.</p>
+      <h2>Content Area below</h2>
+      <WelcomeMessage />
     </main>
   );
 };
