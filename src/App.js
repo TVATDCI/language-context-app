@@ -2,6 +2,7 @@ import "./App.css";
 import LanguageProvider from "./contexts/LanguageProvider";
 import Header from "./components/Header";
 import Content from "./components/Content";
+import Translator from "./components/Translator";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <div className="App">
         <Header />
         <Content />
+        <Translator />
       </div>
     </LanguageProvider>
   );

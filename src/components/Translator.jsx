@@ -1,19 +1,15 @@
 import React, { useContext, useState } from "react";
 import { LanguageContext } from "../contexts/LanguageContext";
-
-const dictionary = {
-  hello: {
-    en: "Hello",
-    es: "Hola",
-    fr: "Bonjour",
-    de: "Hallo",
-  },
-  world: {
-    en: "World",
-    es: "Mundo",
-    fr: "le monde",
-    de: "Welt",
-  },
+import dictionary from "../utils/dictionary";
+const languageMap = {
+  US: "en",
+  DE: "de",
+  TR: "tr",
+  IR: "ir",
+  FR: "fr",
+  SP: "sp",
+  DU: "du",
+  th: "th",
 };
 
 const Translator = () => {
@@ -22,39 +18,49 @@ const Translator = () => {
   const [translated, setTranslated] = useState("");
 
   const handleTranslate = () => {
+    const langCode = languageMap[language] || "en";
     const words = input.trim().split(" ");
     const result = words
-      .map((word) => dictionary[word.toLowerCase()]?.[language] || word)
+      .map((word) => dictionary[word.toLowerCase()]?.[langCode] || word)
       .join(" ");
     setTranslated(result);
   };
 
-  const languages = ["en", "es", "fr", "de"];
+  const languages = [
+    { code: "DE", label: "🇩🇪 German" },
+    { code: "US", label: "🇺🇸 English" },
+    { code: "TR", label: "🇹🇷 Turkish" },
+    { code: "IR", label: "🇮🇷 Persian" },
+    { code: "FR", label: "🇫🇷 French" },
+    { code: "SP", label: "🇪🇸 Spanish" },
+    { code: "DU", label: "🇳🇱 Dutch" },
+    { code: "th", label: "ไทย" },
+  ];
 
   return (
     <div>
       <h2>Enter Text to Translate</h2>
       <input
         type="text"
-        placeholder="e.g., hello world"
+        placeholder="e.g., good morning world"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        style={{ width: "200px", marginBottom: "10px" }}
+        style={{ width: "300px", marginBottom: "10px" }}
       />
-      <div>
+      <div style={{ marginBottom: "10px" }}>
         {languages.map((lang) => (
           <button
-            key={lang}
-            onClick={() => setLanguage(lang)}
-            disabled={language === lang}
+            key={lang.code}
+            onClick={() => setLanguage(lang.code)}
+            disabled={language === lang.code}
             style={{ marginRight: "5px" }}
           >
-            {lang.toUpperCase()}
+            {lang.label}
           </button>
         ))}
         <button onClick={handleTranslate}>Translate</button>
       </div>
-      <p style={{ marginTop: "20px" }}>
+      <p>
         <strong>Translation:</strong> {translated}
       </p>
     </div>
