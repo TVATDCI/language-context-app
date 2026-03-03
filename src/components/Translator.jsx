@@ -1,76 +1,19 @@
-import { useState } from "react";
 import { useLanguage } from "../hooks/useLanguage";
+import { useTranslator } from "../hooks/useTranslator";
 import { LANGUAGES } from "../utils/languages";
-import dictionary, { phrases } from "../utils/dictionary";
-
-/**
- * Translates input text using phrases first, then word-by-word fallback.
- * Longer phrases are matched first (greedy algorithm).
- */
-const translateText = (input, language) => {
-  const tokens = input.trim().split(/\s+/).filter(Boolean);
-  const result = [];
-  let i = 0;
-
-  while (i < tokens.length) {
-    let matched = false;
-
-    // Try to match phrases from longest to shortest
-    for (let len = Math.min(4, tokens.length - i); len >= 1; len--) {
-      const phrase = tokens
-        .slice(i, i + len)
-        .join(" ")
-        .toLowerCase();
-      const phraseTranslation = phrases[phrase]?.[language];
-
-      if (phraseTranslation && len > 1) {
-        // It's a multi-word phrase match
-        result.push({
-          original: tokens.slice(i, i + len).join(" "),
-          translated: phraseTranslation,
-          found: true,
-          isPhrase: true,
-        });
-        i += len;
-        matched = true;
-        break;
-      }
-    }
-
-    if (!matched) {
-      // Fall back to single word lookup
-      const word = tokens[i].toLowerCase();
-      const translated = dictionary[word]?.[language];
-      result.push({
-        original: tokens[i],
-        translated: translated || tokens[i],
-        found: !!translated,
-        isPhrase: false,
-      });
-      i++;
-    }
-  }
-
-  return result;
-};
 
 const Translator = () => {
   const { language, setLanguage } = useLanguage();
-  const [input, setInput] = useState("");
-  const [translationResult, setTranslationResult] = useState(null);
-
-  // Dictionary word count
-  const wordCount = Object.keys(dictionary).length;
+  const { input, setInput, result, translate, wordCount } = useTranslator();
 
   const handleTranslate = () => {
-    const result = translateText(input, language);
-    setTranslationResult(result);
+    translate();
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      handleTranslate();
+      translate();
     }
   };
 
@@ -109,12 +52,12 @@ const Translator = () => {
         Translate
       </button>
 
-      {translationResult && (
+      {result && (
         <div className="space-y-2">
           <p className="text-text-secondary text-sm">
             <span className="text-text-muted font-medium">Translation: </span>
             <span className="text-accent-gold font-semibold">
-              {translationResult.map((item, index) => (
+              {result.map((item, index) => (
                 <span key={index}>
                   {item.found ? (
                     item.translated
@@ -127,12 +70,12 @@ const Translator = () => {
                       <sup className="ml-0.5 text-xs">?</sup>
                     </span>
                   )}
-                  {index < translationResult.length - 1 ? " " : ""}
+                  {index < result.length - 1 ? " " : ""}
                 </span>
               ))}
             </span>
           </p>
-          {translationResult.some((item) => !item.found) && (
+          {result.some((item) => !item.found) && (
             <p className="text-xs text-text-muted">
               <span className="text-accent-coral">Dotted words</span> were not
               found in the dictionary.
