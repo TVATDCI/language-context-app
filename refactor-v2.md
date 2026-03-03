@@ -12,6 +12,33 @@ Building on the solid foundation of refactor-v1, v2 focuses on **UX improvements
 
 ---
 
+## Progress Tracker
+
+| #   | Task                                  | Status     | Commit    |
+| --- | ------------------------------------- | ---------- | --------- |
+| 1.1 | localStorage persistence for language | ✅ Done    | `4c875b9` |
+| 1.2 | Browser language auto-detection       | ✅ Done    | `4c875b9` |
+| 1.3 | RTL layout support for Persian        | ✅ Done    | `4c875b9` |
+| 1.4 | Word not found indicator              | ✅ Done    | `4c875b9` |
+| 1.5 | Translate on Enter key                | ✅ Done    | `4c875b9` |
+| 1.6 | Dictionary word count display         | ✅ Done    | `4c875b9` |
+| 2.1 | Expand dictionary to 150+ words       | ⬜ Pending | —         |
+| 2.2 | Multi-word phrase support             | ⬜ Pending | —         |
+| 3.1 | Extract `useTranslator` hook          | ⬜ Pending | —         |
+| 3.2 | Expand test coverage                  | ⬜ Pending | —         |
+| 3.3 | Dictionary validation script          | ⬜ Pending | —         |
+| 4.1 | Self-hosted fonts (fontsource)        | ⬜ Pending | —         |
+| 4.2 | Absolute imports                      | ⬜ Pending | —         |
+| 4.3 | CHANGELOG.md                          | ⬜ Pending | —         |
+
+**Phase 1 Verification:**
+
+- ✅ `npm run build` — clean build
+- ✅ `npm test -- --run` — 9/9 tests pass
+- ✅ `npm run lint` — zero errors
+
+---
+
 ## Phase 1: UX Improvements
 
 Priority: High | User-facing features that improve daily use
