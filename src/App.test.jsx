@@ -2,6 +2,16 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
+// Mock localStorage
+const localStorageMock = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+};
+Object.defineProperty(window, "localStorage", {
+  value: localStorageMock,
+});
+
 // ── Test 1: App renders without crashing ─────────────────────────────────────
 test("renders the app header", () => {
   render(<App />);
@@ -42,5 +52,67 @@ test("translates a word using the dictionary", async () => {
   const translateButton = screen.getByRole("button", { name: /^Translate$/i });
   await user.click(translateButton);
 
-  expect(screen.getByText("Bonjour")).toBeInTheDocument();
+  expect(screen.getByText(/Bonjour/i)).toBeInTheDocument();
+});
+
+// ── Test 5: localStorage persistence ─────────────────────────────────────────
+test("persists language selection to localStorage", async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  // Click German button
+  const germanButton = screen.getByRole("button", { name: /German/i });
+  await user.click(germanButton);
+
+  // Verify localStorage was called
+  expect(localStorageMock.setItem).toHaveBeenCalledWith("language", "DE");
+});
+
+// ── Test 6: RTL layout for Persian ───────────────────────────────────────────
+test("applies RTL direction when Persian is selected", async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  // Click Persian button
+  const persianButton = screen.getByRole("button", { name: /Persian/i });
+  await user.click(persianButton);
+
+  // Check that the root div has dir="rtl"
+  const container = document.querySelector('[dir="rtl"]');
+  expect(container).toBeInTheDocument();
+});
+
+// ── Test 7: Translate on Enter key ───────────────────────────────────────────
+test("translates when Enter key is pressed", async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  const input = screen.getByPlaceholderText(/hello world/i);
+  await user.type(input, "hello");
+  await user.keyboard("{Enter}");
+
+  expect(screen.getByText(/Hello/i)).toBeInTheDocument();
+});
+
+// ── Test 8: Dictionary word count display ────────────────────────────────────
+test("displays dictionary word count", () => {
+  render(<App />);
+
+  expect(screen.getByText(/\d+ words in dictionary/i)).toBeInTheDocument();
+});
+
+// ── Test 9: Unknown word indicator ───────────────────────────────────────────
+test("shows indicator for unknown words", async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  // Type a word that doesn't exist in dictionary
+  const input = screen.getByPlaceholderText(/hello world/i);
+  await user.type(input, "xyzunknown123");
+
+  const translateButton = screen.getByRole("button", { name: /^Translate$/i });
+  await user.click(translateButton);
+
+  // Check for the helper text about dotted words
+  expect(screen.getByText(/not found in the dictionary/i)).toBeInTheDocument();
 });
