@@ -1,29 +1,28 @@
-import React, { useContext } from "react";
-import { LanguageContext } from "../contexts/LanguageContext";
+import { useLanguage } from "../hooks/useLanguage";
+import { LANGUAGES } from "../utils/languages";
 
 const LanguageSelector = () => {
-  const { language, setLanguage } = useContext(LanguageContext);
-
-  const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-  };
+  const { language, setLanguage } = useLanguage();
 
   return (
-    <div>
-      <label htmlFor="language-select">Choose language: </label>
+    <div className="flex items-center gap-2">
+      <label
+        htmlFor="language-select"
+        className="text-text-muted text-sm font-medium"
+      >
+        Language:
+      </label>
       <select
         id="language-select"
         value={language}
-        onChange={handleLanguageChange}
+        onChange={(e) => setLanguage(e.target.value)}
+        className="bg-surface-overlay border border-stroke rounded-md px-3 py-1.5 text-text-secondary text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent/50"
       >
-        <option value="DE">🇩🇪&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;German</option>
-        <option value="US">🇺🇸&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;English</option>
-        <option value="TR">🇹🇷&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Turkish</option>
-        <option value="IR">🇮🇷&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Persian</option>
-        <option value="FR">🇫🇷&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;French</option>
-        <option value="SP">🇪🇸&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Spanish</option>
-        <option value="DU">🇳🇱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dutch</option>
-        <option value="th">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ไทย</option>
+        {LANGUAGES.map((lang) => (
+          <option key={lang.code} value={lang.code}>
+            {lang.label}
+          </option>
+        ))}
       </select>
     </div>
   );
