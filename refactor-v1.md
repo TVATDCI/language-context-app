@@ -239,18 +239,128 @@ Rewrite `src/App.test.js` → `src/App.test.jsx`:
 
 ## Verification Checklist
 
-- [ ] `npm run dev` — app loads; all 8 languages update WelcomeMessage greeting and Translator correctly
-- [ ] `npm test` — all tests green
-- [ ] `npm run lint` — zero ESLint errors
-- [ ] `npm run build` — clean production build, no warnings
+- [x] `npm run dev` — app loads; all 8 languages update WelcomeMessage greeting and Translator correctly
+- [x] `npm test -- --run` — 4/4 tests pass
+- [x] `npm run lint` — zero ESLint errors
+- [x] `npm run build` — clean production build, no warnings
 
 ---
 
-## Future Refactor Ideas (v2)
+## Commit History (feature/v1)
 
-- Migrate to TypeScript (`.ts`/`.tsx`) — add `tsconfig.json`, type the language context and dictionary
-- Add more dictionary words and a "word not found" UI indicator
-- Persist selected language to `localStorage`
-- Add RTL layout support for Persian (`IR`) using Tailwind's `rtl:` variant
-- Add language auto-detection based on browser `navigator.language`
-- Add a loading/transition animation when switching languages
+| Hash      | Type     | Scope      | Description                                                                                 |
+| --------- | -------- | ---------- | ------------------------------------------------------------------------------------------- |
+| `225dd09` | fix      | lang       | Normalize all language codes to uppercase; expand dictionary 4→60 words; add `languages.js` |
+| `a48fc64` | feat     | hooks      | Add `useLanguage` custom hook with provider guard                                           |
+| `3db06a6` | feat     | styling    | Install Tailwind CSS v4.2 via `@tailwindcss/vite`; rewrite `index.css` with `@theme` tokens |
+| `0e612fa` | refactor | components | Apply Tailwind classes, `useLanguage`, `LANGUAGES` to all components                        |
+| `684875e` | test     | —          | Set up Vitest + Testing Library; rewrite `App.test.jsx` with 4 real tests                   |
+| `74890a6` | docs     | config     | Update `index.html`, `README.md`; create `refactor-v1.md`                                   |
+
+---
+
+## Refactor v2 — Future Development Plan
+
+### Priority 1 — UX Improvements
+
+#### 1.1 Persist language selection to `localStorage`
+
+- Store the selected language code in `localStorage` on every `setLanguage` call
+- Read from `localStorage` as the initial value in `LanguageProvider` (with `EN` fallback)
+- Files: `src/contexts/LanguageProvider.jsx`
+- Why: currently refreshing the page resets to English
+
+#### 1.2 "Word not found" indicator in Translator
+
+- When a typed word is not in the dictionary, currently it passes through unchanged
+- Show a subtle visual indicator — e.g. a dotted underline or `[word?]` badge — on unrecognized words in the translation output
+- Files: `src/components/Translator.jsx`
+
+#### 1.3 Translate on Enter key
+
+- Currently requires clicking the Translate button
+- Add `onKeyDown` handler to the input: if `key === 'Enter'` fire `handleTranslate`
+- Files: `src/components/Translator.jsx`
+
+#### 1.4 RTL layout support for Persian
+
+- Persian (`IR`) is a right-to-left language; the current layout doesn't flip
+- Add `dir="rtl"` dynamically to the `<html>` element (or a wrapper) when `language === 'IR'`
+- Use Tailwind `rtl:` variant for mirrored padding/margins where needed
+- Files: `src/App.jsx`, `src/contexts/LanguageProvider.jsx`
+
+#### 1.5 Language auto-detection on first load
+
+- Read `navigator.language` and map it to the closest supported code on first visit
+- Only apply if no `localStorage` value exists yet
+- Files: `src/contexts/LanguageProvider.jsx`
+
+---
+
+### Priority 2 — Content / Dictionary
+
+#### 2.1 Expand dictionary to ~150+ words
+
+- Add categories: numbers (one–ten), colours, body parts, emotions, transport, weather
+- Maintain the compact inline object format already in use
+- Files: `src/utils/dictionary.js`
+
+#### 2.2 Multi-word phrase support
+
+- Currently translates word-by-word; add a `phrases` lookup that is checked first before the word-by-word fallback
+- Example: `"good morning"` → `"Guten Morgen"` (not `"Gut Morgen"`)
+- Files: `src/utils/dictionary.js`, `src/components/Translator.jsx`
+
+#### 2.3 Dictionary word count display
+
+- Show a small stat in the UI: "X words in dictionary"
+- Computed from `Object.keys(dictionary).length`
+- Files: `src/components/Translator.jsx`
+
+---
+
+### Priority 3 — Code Quality
+
+#### 3.1 Migrate to TypeScript
+
+- Rename `.js` → `.ts`, `.jsx` → `.tsx`
+- Add `tsconfig.json` (target ES2020, `"jsx": "react-jsx"`, `"strict": true`)
+- Type the context: `LanguageCode = 'EN' | 'DE' | 'TR' | 'IR' | 'FR' | 'SP' | 'DU' | 'TH'`
+- Type the dictionary: `Record<string, Record<LanguageCode, string>>`
+- This is the largest scope change — do in a dedicated branch `feature/typescript`
+
+#### 3.2 Expand test coverage
+
+- Add tests for: `useLanguage` throws outside provider, `localStorage` persistence, RTL flag, "word not found" indicator
+- Add a separate `dictionary.test.js` that asserts every word has all 8 language keys
+- Target ≥ 80% statement coverage (`vitest --coverage`)
+- Install: `@vitest/coverage-v8`
+
+#### 3.3 Extract a `useTranslator` hook
+
+- Move the `input`, `translated`, `handleTranslate` state logic out of `Translator.jsx` into `src/hooks/useTranslator.js`
+- Keeps the component purely presentational
+- Makes the translation logic independently testable
+
+---
+
+### Priority 4 — Architecture / DX
+
+#### 4.1 Move Google Fonts to self-hosted
+
+- Download Sora, Source Code Pro, Space Grotesk via `fontsource` npm packages
+- Remove external Google Fonts `<link>` from `index.html`
+- Eliminates external network dependency; improves privacy and load performance
+- Install: `@fontsource/sora`, `@fontsource/source-code-pro`, `@fontsource/space-grotesk`
+- Files: `src/main.jsx` (import font CSS), `index.html`
+
+#### 4.2 Add absolute imports
+
+- Configure Vite `resolve.alias` so `@/components/...`, `@/hooks/...`, `@/utils/...` work
+- Avoids fragile `../../` relative imports as the tree grows
+- Files: `vite.config.js`
+
+#### 4.3 Add a `CHANGELOG.md`
+
+- Document changes per version following Keep a Changelog format
+- Start with v1.0.0 entry summarising the refactor-v1 work
