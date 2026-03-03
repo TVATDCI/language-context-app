@@ -22,8 +22,8 @@ Building on the solid foundation of refactor-v1, v2 focuses on **UX improvements
 | 1.4 | Word not found indicator              | ✅ Done    | `4c875b9` |
 | 1.5 | Translate on Enter key                | ✅ Done    | `4c875b9` |
 | 1.6 | Dictionary word count display         | ✅ Done    | `4c875b9` |
-| 2.1 | Expand dictionary to 150+ words       | ⬜ Pending | —         |
-| 2.2 | Multi-word phrase support             | ⬜ Pending | —         |
+| 2.1 | Expand dictionary to 150+ words       | ✅ Done    | `4a87aca` |
+| 2.2 | Multi-word phrase support             | ✅ Done    | `4a87aca` |
 | 3.1 | Extract `useTranslator` hook          | ⬜ Pending | —         |
 | 3.2 | Expand test coverage                  | ⬜ Pending | —         |
 | 3.3 | Dictionary validation script          | ⬜ Pending | —         |
@@ -35,6 +35,14 @@ Building on the solid foundation of refactor-v1, v2 focuses on **UX improvements
 
 - ✅ `npm run build` — clean build
 - ✅ `npm test -- --run` — 9/9 tests pass
+- ✅ `npm run lint` — zero errors
+
+**Phase 2 Verification:**
+
+- ✅ `npm run build` — clean build
+- ✅ `npm test -- --run` — 11/11 tests pass
+- ✅ Dictionary expanded: 60 → 134 words
+- ✅ 10 multi-word phrases added
 - ✅ `npm run lint` — zero errors
 
 ---
