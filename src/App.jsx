@@ -6,10 +6,12 @@ import Translator from "./components/Translator";
 function App() {
   return (
     <LanguageProvider>
-      <div className="App">
+      <div className="min-h-screen bg-surface text-text-primary font-sans">
         <Header />
-        <Content />
-        <Translator />
+        <div className="max-w-2xl mx-auto px-4">
+          <Content />
+          <Translator />
+        </div>
       </div>
     </LanguageProvider>
   );

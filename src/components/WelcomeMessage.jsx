@@ -1,21 +1,24 @@
-import React, { useContext } from "react";
-import { LanguageContext } from "../contexts/LanguageContext";
+import { useLanguage } from "../hooks/useLanguage";
 
 const greetings = {
-  en: "Hello World!",
-  de: "Hallo Welt!",
-  IR: "سلام دنیا!",
-  th: "สวัสดีชาวโลก!",
+  EN: "Hello World!",
+  DE: "Hallo Welt!",
   TR: "Selam Dünya!",
+  IR: "سلام دنیا!",
   FR: "Bonjour le monde!",
-  SP: "Hola Mundo!",
+  SP: "¡Hola Mundo!",
   DU: "Hallo Wereld!",
+  TH: "สวัสดีชาวโลก!",
 };
 
 const WelcomeMessage = () => {
-  const { language } = useContext(LanguageContext);
+  const { language } = useLanguage();
 
-  return <h1>{greetings[language] || "Hello World!"}</h1>;
+  return (
+    <p className="text-3xl font-semibold text-accent mt-2">
+      {greetings[language] ?? "Hello World!"}
+    </p>
+  );
 };
 
 export default WelcomeMessage;
