@@ -116,3 +116,42 @@ test("shows indicator for unknown words", async () => {
   // Check for the helper text about dotted words
   expect(screen.getByText(/not found in the dictionary/i)).toBeInTheDocument();
 });
+
+// ── Test 10: Phrase translation ──────────────────────────────────────────────
+test("translates multi-word phrases correctly", async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  // Switch to German
+  const germanButton = screen.getByRole("button", { name: /German/i });
+  await user.click(germanButton);
+
+  // Type a phrase
+  const input = screen.getByPlaceholderText(/hello world/i);
+  await user.type(input, "good morning");
+
+  const translateButton = screen.getByRole("button", { name: /^Translate$/i });
+  await user.click(translateButton);
+
+  // Should translate as phrase "Guten Morgen", not word-by-word
+  expect(screen.getByText(/Guten Morgen/i)).toBeInTheDocument();
+});
+
+// ── Test 11: Dictionary integrity ────────────────────────────────────────────
+test("dictionary has all required language keys for every word", async () => {
+  const requiredKeys = ["EN", "DE", "TR", "IR", "FR", "SP", "DU", "TH"];
+  const { default: dictionary } = await import("./utils/dictionary");
+
+  Object.entries(dictionary).forEach(([word, translations]) => {
+    requiredKeys.forEach((lang) => {
+      expect(
+        translations[lang],
+        `Missing ${lang} translation for "${word}"`,
+      ).toBeDefined();
+      expect(
+        translations[lang].length,
+        `Empty ${lang} translation for "${word}"`,
+      ).toBeGreaterThan(0);
+    });
+  });
+});

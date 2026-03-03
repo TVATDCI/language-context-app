@@ -1,7 +1,58 @@
 import { useState } from "react";
 import { useLanguage } from "../hooks/useLanguage";
 import { LANGUAGES } from "../utils/languages";
-import dictionary from "../utils/dictionary";
+import dictionary, { phrases } from "../utils/dictionary";
+
+/**
+ * Translates input text using phrases first, then word-by-word fallback.
+ * Longer phrases are matched first (greedy algorithm).
+ */
+const translateText = (input, language) => {
+  const tokens = input.trim().split(/\s+/).filter(Boolean);
+  const result = [];
+  let i = 0;
+
+  while (i < tokens.length) {
+    let matched = false;
+
+    // Try to match phrases from longest to shortest
+    for (let len = Math.min(4, tokens.length - i); len >= 1; len--) {
+      const phrase = tokens
+        .slice(i, i + len)
+        .join(" ")
+        .toLowerCase();
+      const phraseTranslation = phrases[phrase]?.[language];
+
+      if (phraseTranslation && len > 1) {
+        // It's a multi-word phrase match
+        result.push({
+          original: tokens.slice(i, i + len).join(" "),
+          translated: phraseTranslation,
+          found: true,
+          isPhrase: true,
+        });
+        i += len;
+        matched = true;
+        break;
+      }
+    }
+
+    if (!matched) {
+      // Fall back to single word lookup
+      const word = tokens[i].toLowerCase();
+      const translated = dictionary[word]?.[language];
+      result.push({
+        original: tokens[i],
+        translated: translated || tokens[i],
+        found: !!translated,
+        isPhrase: false,
+      });
+      i++;
+    }
+  }
+
+  return result;
+};
 
 const Translator = () => {
   const { language, setLanguage } = useLanguage();
@@ -12,16 +63,7 @@ const Translator = () => {
   const wordCount = Object.keys(dictionary).length;
 
   const handleTranslate = () => {
-    const words = input.trim().split(/\s+/).filter(Boolean);
-    const result = words.map((word) => {
-      const lowerWord = word.toLowerCase();
-      const translated = dictionary[lowerWord]?.[language];
-      return {
-        original: word,
-        translated: translated || word,
-        found: !!translated,
-      };
-    });
+    const result = translateText(input, language);
     setTranslationResult(result);
   };
 
