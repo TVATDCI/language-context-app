@@ -41,7 +41,7 @@ src/
 │   └── WelcomeMessage.jsx
 ├── contexts/
 │   ├── LanguageContext.js
-│   └── LanguageProvider.jsx
+│   └── LanguageProvider.jsx  # localStorage persistence + auto-detection
 ├── hooks/
 │   └── useLanguage.js     # custom hook wrapping useContext
 └── utils/
@@ -74,6 +74,14 @@ All language codes are **2-letter uppercase** throughout the codebase.
 
 ---
 
-## Refactor
+## Refactor v2 Features (Phase 1)
 
-See [refactor-v1.md](./refactor-v1.md) for the full upgrade plan and progress tracker.
+- **localStorage Persistence** — Language selection survives page reloads
+- **Browser Auto-Detection** — Automatically detects browser language on first visit
+- **RTL Support** — Persian (IR) renders with right-to-left layout
+- **Word Not Found Indicator** — Unknown words show with dotted underline and [?] badge
+- **Enter Key Translation** — Press Enter to translate without clicking the button
+- **Dictionary Word Count** — Shows how many words are available in the dictionary
+
+See [refactor-v1.md](./refactor-v1.md) for the full v1 upgrade plan.  
+See [refactor-v2.md](./refactor-v2.md) for the v2 roadmap (Phases 2–4).

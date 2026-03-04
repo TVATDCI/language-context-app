@@ -9,9 +9,13 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "validate": "node scripts/validate-dictionary.js"
   },
   "dependencies": {
+    "@fontsource/sora": "^5.2.5",
+    "@fontsource/source-code-pro": "^5.2.5",
+    "@fontsource/space-grotesk": "^5.2.5",
     "@tailwindcss/vite": "^4.2.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

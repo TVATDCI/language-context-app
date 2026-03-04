@@ -1,19 +1,20 @@
-import { useState } from "react";
 import { useLanguage } from "../hooks/useLanguage";
+import { useTranslator } from "../hooks/useTranslator";
 import { LANGUAGES } from "../utils/languages";
-import dictionary from "../utils/dictionary";
 
 const Translator = () => {
   const { language, setLanguage } = useLanguage();
-  const [input, setInput] = useState("");
-  const [translated, setTranslated] = useState("");
+  const { input, setInput, result, translate, wordCount } = useTranslator();
 
   const handleTranslate = () => {
-    const words = input.trim().split(" ");
-    const result = words
-      .map((word) => dictionary[word.toLowerCase()]?.[language] || word)
-      .join(" ");
-    setTranslated(result);
+    translate();
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      translate();
+    }
   };
 
   return (
@@ -27,6 +28,7 @@ const Translator = () => {
         placeholder="e.g., hello world, good morning, love is beautiful"
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleKeyDown}
         className="w-full max-w-sm bg-surface-overlay border border-stroke rounded-md px-3 py-2 text-text-secondary text-sm placeholder:text-text-disabled focus:outline-none focus:ring-2 focus:ring-accent/50 mb-4"
       />
 
@@ -50,12 +52,41 @@ const Translator = () => {
         Translate
       </button>
 
-      {translated && (
-        <p className="text-text-secondary text-sm">
-          <span className="text-text-muted font-medium">Translation: </span>
-          <span className="text-accent-gold font-semibold">{translated}</span>
-        </p>
+      {result && (
+        <div className="space-y-2">
+          <p className="text-text-secondary text-sm">
+            <span className="text-text-muted font-medium">Translation: </span>
+            <span className="text-accent-gold font-semibold">
+              {result.map((item, index) => (
+                <span key={index}>
+                  {item.found ? (
+                    item.translated
+                  ) : (
+                    <span
+                      className="text-accent-coral border-b border-dotted border-accent-coral/60"
+                      title={`"${item.original}" not found in dictionary`}
+                    >
+                      {item.translated}
+                      <sup className="ml-0.5 text-xs">?</sup>
+                    </span>
+                  )}
+                  {index < result.length - 1 ? " " : ""}
+                </span>
+              ))}
+            </span>
+          </p>
+          {result.some((item) => !item.found) && (
+            <p className="text-xs text-text-muted">
+              <span className="text-accent-coral">Dotted words</span> were not
+              found in the dictionary.
+            </p>
+          )}
+        </div>
       )}
+
+      <p className="mt-4 text-xs text-text-muted">
+        {wordCount} words in dictionary
+      </p>
     </section>
   );
 };
