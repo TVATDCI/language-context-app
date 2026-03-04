@@ -26,11 +26,11 @@ npm run build
 
 ## Project Structure
 
-```
+```text
 src/
 ├── App.jsx
 ├── main.jsx
-├── index.css              # @import "tailwindcss" + @theme tokens
+├── index.css          # @import "tailwindcss" + @theme tokens
 ├── setupTests.js
 ├── App.test.jsx
 ├── components/
@@ -43,10 +43,10 @@ src/
 │   ├── LanguageContext.js
 │   └── LanguageProvider.jsx  # localStorage persistence + auto-detection
 ├── hooks/
-│   └── useLanguage.js     # custom hook wrapping useContext
+│   └── useLanguage.js # custom hook wrapping useContext
 └── utils/
-    ├── dictionary.js      # word translations keyed by uppercase code
-    └── languages.js       # single source of truth for language list
+    ├── dictionary.js  # word translations keyed by uppercase code
+    └── languages.js   # single source of truth for language list
 ```
 
 ---

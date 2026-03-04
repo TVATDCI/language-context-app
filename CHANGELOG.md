@@ -61,7 +61,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [1.0.0] - 2026-03-03
 
-### Added
+### Added Features
 
 #### Core Features
 
@@ -93,13 +93,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - 4 initial tests for App rendering and translation
 
-### Changed
+### Changes
 
 - Migrated from Create React App to Vite
 - Upgraded to Tailwind CSS v4.2 with CSS-first configuration
 - Removed `tailwind.config.js` in favor of CSS `@theme`
 
-### Fixed
+### Fixed (v1.0.0)
 
 - Silent language-code mismatch bug (all codes now uppercase)
 - Stale `import React` statements removed

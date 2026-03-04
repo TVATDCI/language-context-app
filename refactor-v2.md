@@ -14,58 +14,58 @@ Building on the solid foundation of refactor-v1, v2 focuses on **UX improvements
 
 ## Progress Tracker
 
-| #   | Task                                  | Status  | Commit    |
-| --- | ------------------------------------- | ------- | --------- |
-| 1.1 | localStorage persistence for language | ✅ Done | `4c875b9` |
-| 1.2 | Browser language auto-detection       | ✅ Done | `4c875b9` |
-| 1.3 | RTL layout support for Persian        | ✅ Done | `4c875b9` |
-| 1.4 | Word not found indicator              | ✅ Done | `4c875b9` |
-| 1.5 | Translate on Enter key                | ✅ Done | `4c875b9` |
-| 1.6 | Dictionary word count display         | ✅ Done | `4c875b9` |
-| 2.1 | Expand dictionary to 150+ words       | ✅ Done | `4a87aca` |
-| 2.2 | Multi-word phrase support             | ✅ Done | `4a87aca` |
-| 3.1 | Extract `useTranslator` hook          | ✅ Done | `a137f56` |
-| 3.2 | Expand test coverage                  | ✅ Done | `a137f56` |
-| 3.3 | Dictionary validation script          | ✅ Done | `a137f56` |
-| 4.1 | Self-hosted fonts (fontsource)        | ✅ Done | `18dd280` |
-| 4.2 | Absolute imports                      | ✅ Done | `18dd280` |
-| 4.3 | CHANGELOG.md                          | ✅ Done | `18dd280` |
+| #   | Task                                  | Status | Commit    |
+| --- | ------------------------------------- | ------ | --------- |
+| 1.1 | localStorage persistence for language | Done   | `4c875b9` |
+| 1.2 | Browser language auto-detection       | Done   | `4c875b9` |
+| 1.3 | RTL layout support for Persian        | Done   | `4c875b9` |
+| 1.4 | Word not found indicator              | Done   | `4c875b9` |
+| 1.5 | Translate on Enter key                | Done   | `4c875b9` |
+| 1.6 | Dictionary word count display         | Done   | `4c875b9` |
+| 2.1 | Expand dictionary to 150+ words       | Done   | `4a87aca` |
+| 2.2 | Multi-word phrase support             | Done   | `4a87aca` |
+| 3.1 | Extract `useTranslator` hook          | Done   | `a137f56` |
+| 3.2 | Expand test coverage                  | Done   | `a137f56` |
+| 3.3 | Dictionary validation script          | Done   | `a137f56` |
+| 4.1 | Self-hosted fonts (fontsource)        | Done   | `18dd280` |
+| 4.2 | Absolute imports                      | Done   | `18dd280` |
+| 4.3 | CHANGELOG.md                          | Done   | `18dd280` |
 
 **Phase 1 Verification:**
 
-- ✅ `npm run build` — clean build
-- ✅ `npm test -- --run` — 9/9 tests pass
-- ✅ `npm run lint` — zero errors
+- `npm run build` — clean build
+- `npm test -- --run` — 9/9 tests pass
+- `npm run lint` — zero errors
 
 **Phase 2 Verification:**
 
-- ✅ `npm run build` — clean build
-- ✅ `npm test -- --run` — 11/11 tests pass
-- ✅ Dictionary expanded: 60 → 134 words
-- ✅ 10 multi-word phrases added
-- ✅ `npm run lint` — zero errors
+- `npm run build` — clean build
+- `npm test -- --run` — 11/11 tests pass
+- Dictionary expanded: 60 → 134 words
+- 10 multi-word phrases added
+- `npm run lint` — zero errors
 
 **Phase 3 Verification:**
 
-- ✅ `npm run build` — clean build
-- ✅ `npm test -- --run` — 18/18 tests pass
-- ✅ `npm run validate` — dictionary validation passes
-- ✅ `npm run lint` — zero errors
-- ✅ useTranslator hook extracted and tested
-- ✅ Test coverage expanded with hook unit tests
+- `npm run build` — clean build
+- `npm test -- --run` — 18/18 tests pass
+- `npm run validate` — dictionary validation passes
+- `npm run lint` — zero errors
+- useTranslator hook extracted and tested
+- Test coverage expanded with hook unit tests
 
 **Phase 4 Verification:**
 
-- ✅ `npm run build` — clean build
-- ✅ Fonts load from @fontsource packages (no external CDN)
-- ✅ `@/` path alias configured in Vite
-- ✅ IDE autocomplete works via jsconfig.json
-- ✅ `CHANGELOG.md` created with v1.0.0 and v2.0.0 entries
-- ✅ `npm run lint` — zero errors
+- `npm run build` — clean build
+- Fonts load from @fontsource packages (no external CDN)
+- `@/` path alias configured in Vite
+- IDE autocomplete works via jsconfig.json
+- `CHANGELOG.md` created with v1.0.0 and v2.0.0 entries
+- `npm run lint` — zero errors
 
 ---
 
-## v2.0.0 Complete! 🎉
+## v2.0.0 Complete
 
 All four phases of Refactor v2 have been successfully implemented.
 
@@ -414,7 +414,7 @@ npm install @fontsource/sora @fontsource/source-code-pro @fontsource/space-grote
 **Current:** Flat `src/components/`  
 **Proposed:** Feature-based organization
 
-```
+```text
 src/
 ├── components/
 │   ├── ui/                    # Reusable UI primitives
