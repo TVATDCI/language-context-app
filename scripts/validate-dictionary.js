@@ -11,6 +11,7 @@
  * Usage: node scripts/validate-dictionary.js
  */
 
+import process from "process";
 import dictionary from "../src/utils/dictionary.js";
 
 const REQUIRED_LANGUAGES = ["EN", "DE", "TR", "IR", "FR", "SP", "DU", "TH"];
